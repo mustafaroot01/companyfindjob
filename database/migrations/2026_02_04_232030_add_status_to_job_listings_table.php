@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('job_listings', function (Blueprint $table) {
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending')->after('degree_level');
-        });
+        if (!Schema::hasColumn('job_listings', 'status')) {
+            Schema::table('job_listings', function (Blueprint $table) {
+                $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending')->after('degree_level');
+            });
+        }
     }
 
     /**

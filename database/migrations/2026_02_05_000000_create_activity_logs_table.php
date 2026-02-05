@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('activity_logs', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->string('action'); // e.g., 'deleted_job', 'banned_user'
-            $table->string('description')->nullable(); // e.g., 'Deleted job: Senior Developer'
-            $table->string('ip_address')->nullable();
-            $table->json('properties')->nullable(); // For extra data like 'old_value', 'new_value'
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('activity_logs')) {
+            Schema::create('activity_logs', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+                $table->string('action'); // e.g., 'deleted_job', 'banned_user'
+                $table->string('description')->nullable(); // e.g., 'Deleted job: Senior Developer'
+                $table->string('ip_address')->nullable();
+                $table->json('properties')->nullable(); // For extra data like 'old_value', 'new_value'
+                $table->timestamps();
+            });
+        }
     }
 
     /**
